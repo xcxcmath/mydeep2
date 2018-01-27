@@ -4,19 +4,7 @@
 #include "Common.h"
 
 namespace mydeep {
-    namespace Function {
-        namespace Activation {
-            using Function = std::function<double(const double &)>;
-
-            struct FuncPair {
-                Function f;
-                Function df;
-            };
-
-            extern const FuncPair ReLU;
-            extern const FuncPair Sigmoid;
-            extern const FuncPair Tanh;
-        }
+    namespace function {
 
         namespace Output {
             using OutputFunction = std::function<Matrix(const Matrix&)>;

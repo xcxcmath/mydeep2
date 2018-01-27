@@ -1,25 +1,7 @@
 #include "Function.h"
 
 namespace mydeep {
-    namespace Function {
-        namespace Activation {
-            const FuncPair ReLU = {
-                    [](const double &x) -> double {return x * (x>0);},
-                    [](const double &x) -> double {return (x>0);}
-            };
-            const FuncPair Sigmoid = {
-                    [](const double &x) -> double {return 1./(1.+std::exp(-x));},
-                    [](const double &x) -> double {
-                        const auto exp = std::exp(-x);
-                        return exp / (std::pow(1.+exp, 2.));
-                    }
-            };
-            const FuncPair Tanh {
-                    [](const double &x) -> double {return std::tanh(x);},
-                    [](const double &x) -> double {return std::pow(std::cosh(x), -2.);}
-            };
-        }
-
+    namespace function {
         namespace Output {
             const FuncPair Softmax = {
                     [](const Matrix &x) -> Matrix {

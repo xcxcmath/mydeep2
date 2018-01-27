@@ -7,6 +7,7 @@ namespace mydeep {
     namespace layer {
         enum class ParamKey {
             weight, bias,   //Affine
+            init_stddev,
             ratio,          //Dropout
             beta, gamma,    //Batch Norm
             mean, var,
@@ -23,15 +24,16 @@ namespace mydeep {
             explicit Hidden();
             explicit Hidden(const Param &param);
 
-            Matrix predict(const Matrix &x) const override = 0;
+            Matrix predict(const Matrix &x) override = 0;
             virtual Matrix forward(const Matrix &x);
-            virtual BackOutput backward(const Matrix &delta) = 0;
+            virtual BackOutput backward(const Matrix &delta)= 0;
 
             void update(const Param &param);
             Param param() const;
 
         protected:
             Param m_param;
+            BackOutput m_backout;
         };
     }
 }

@@ -9,7 +9,7 @@ namespace mydeep {
         public:
             virtual ~Layer();
 
-            virtual Matrix predict(const Matrix &x) const = 0;
+            virtual Matrix predict(const Matrix &x) = 0;
 
         protected:
             Matrix m_in;
