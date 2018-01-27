@@ -1,18 +1,21 @@
 #ifndef MYDEEP2_LAYER_H
 #define MYDEEP2_LAYER_H
 
-#include "Core.h"
+#include "Common.h"
 
 namespace mydeep {
-    class Layer {
-    public:
-        virtual ~Layer();
-        virtual Matrix predict(const Matrix &x) = 0;
+    namespace Layer {
+        class Layer {
+        public:
+            virtual ~Layer();
 
-    protected:
-        Matrix m_in;
-        Matrix m_out;
-    };
+            virtual Matrix predict(const Matrix &x) = 0;
+
+        protected:
+            Matrix m_in;
+            Matrix m_out;
+        };
+    }
 }
 
 #endif //MYDEEP2_LAYER_H

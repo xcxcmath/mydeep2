@@ -5,7 +5,7 @@ project(mydeep2)
 set(PROJECT_VERSION_MAJOR 3)
 set(PROJECT_VERSION_MINOR 1)
 
-#Build comfiguration
+#Build configuration
 include_directories(Eigen)
 add_compile_options(-W -Wall -O2)
 
@@ -16,8 +16,8 @@ set(CMAKE_CXX_FLAGS_DEBUG "-g")
 set(CMAKE_CXX_STANDARD 17)
 
 #src files
-set(core_sources Layer.cpp)
-set(core_headers Core.h Layer.h)
+set(core_sources Layer.cpp Function.cpp)
+set(core_headers Common.h Layer.h Function.h)
 
 set(sources ${core_sources})
 set(headers ${core_headers})
