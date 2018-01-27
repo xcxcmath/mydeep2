@@ -20,10 +20,19 @@ set(core_sources)
 set(core_headers Common.h)
 set(layer_sources Layer.cpp Hidden.cpp Affine.cpp Activation.cpp Dropout.cpp BatchNorm.cpp Output.cpp)
 set(layer_headers Layer.h Hidden.h Affine.h Activation.h Dropout.h BatchNorm.h Output.h)
+set(network_sources Network.cpp)
+set(network_headers Network.h)
+
+set(optimizer_sources Optimizer.cpp)
+set(optimizer_headers Optimizer.h)
 
 set(sources ${core_sources}
-            ${layer_sources})
+            ${layer_sources}
+        ${network_sources}
+        ${optimizer_sources})
 set(headers ${core_headers}
-            ${layer_headers})
+            ${layer_headers}
+        ${network_headers}
+        ${optimizer_headers})
 
 add_executable(mydeep2 main.cpp ${sources} ${headers})
