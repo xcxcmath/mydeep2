@@ -22,10 +22,8 @@ namespace mydeep {
             assert(INIT > 0 && "BatchNorm layer is not prepared.");
 
             const auto &p = m_param[ParamKey::momentum_epsilon];
-            const auto momentum = p(0, 0);
             const auto eps = p(0, 1);
 
-            const auto sz = x.rows();
             const auto &g = m_param[ParamKey::gamma];
             const auto &b = m_param[ParamKey::beta];
             const auto &cache_mean = m_param[ParamKey::mean];
@@ -35,6 +33,7 @@ namespace mydeep {
             const auto var_sqr = (cache_var.array()+eps).pow(-0.5).matrix().col(0);
             norm = var_sqr.asDiagonal() * norm;
             norm = (g.col(0).asDiagonal() * norm).colwise() + b.col(0);
+            //TODO : asDiagonal() vs array()
 
             return norm;
         }
@@ -79,28 +78,23 @@ namespace mydeep {
             m_backout.gradient[ParamKey::gamma] = delta.cwiseProduct(m_norm).rowwise().sum();
 
             const auto &g = m_param[ParamKey::gamma];
-            const auto &momentum = m_param[ParamKey::momentum_epsilon](0, 0);
             const auto &eps = m_param[ParamKey::momentum_epsilon](0, 1);
-            const auto rows = delta.rows(), cols = delta.cols();
+            const auto cols = delta.cols();
             const auto var_eps = m_var.array() + eps;
 
             const auto var_1_5 = var_eps.pow(-1.5).matrix().col(0);
             const auto var_sqr = var_eps.pow(-0.5).matrix().col(0);
 
             const auto dnorm = g.col(0).asDiagonal() * delta;
-            const Matrix dvar = ((m_xc.col(0).asDiagonal()
-                                  * var_1_5.asDiagonal().toDenseMatrix()
-                                  * -0.5)
-                                  * dnorm).rowwise().sum();
+            const Matrix dvar = (var_1_5.asDiagonal() * dnorm.cwiseProduct(m_xc) * -0.5).rowwise().sum();
             Matrix dmean = (var_sqr.asDiagonal() * dnorm * -1.).rowwise().sum();
-            dmean = dmean.colwise() + (dvar.cwiseProduct(m_xc) * 2. / cols).col(0);
+            dmean = dmean.colwise() +
+                    (dvar.col(0).asDiagonal() * (m_xc.rowwise().mean() * -2.)).col(0);
 
             m_backout.delta = (var_sqr.asDiagonal() * dnorm).colwise() + dmean.col(0) / cols;
             m_backout.delta = m_backout.delta.colwise() + (dvar.cwiseProduct(m_xc) * 2. /cols).col(0);
 
             return m_backout;
         }
-
-
     }
 }
