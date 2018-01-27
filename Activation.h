@@ -2,7 +2,6 @@
 #define MYDEEP2_ACTIVATION_H
 
 #include "Hidden.h"
-#include "Function.h"
 
 namespace mydeep {
     namespace layer {
