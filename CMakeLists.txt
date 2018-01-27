@@ -16,10 +16,14 @@ set(CMAKE_CXX_FLAGS_DEBUG "-g")
 set(CMAKE_CXX_STANDARD 17)
 
 #src files
-set(core_sources Layer.cpp Function.cpp)
-set(core_headers Common.h Layer.h Function.h)
+set(core_sources Function.cpp)
+set(core_headers Common.h Function.h)
+set(layer_sources Layer.cpp Hidden.cpp)
+set(layer_headers Layer.h Hidden.h)
 
-set(sources ${core_sources})
-set(headers ${core_headers})
+set(sources ${core_sources}
+            ${layer_sources})
+set(headers ${core_headers}
+            ${layer_headers})
 
 add_executable(mydeep2 main.cpp ${sources} ${headers})

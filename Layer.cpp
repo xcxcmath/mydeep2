@@ -1,3 +1,3 @@
 #include "Layer.h"
 
-mydeep::Layer::Layer::~Layer() = default;
+mydeep::layer::Layer::~Layer() = default;

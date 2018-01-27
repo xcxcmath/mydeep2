@@ -4,12 +4,12 @@
 #include "Common.h"
 
 namespace mydeep {
-    namespace Layer {
+    namespace layer {
         class Layer {
         public:
             virtual ~Layer();
 
-            virtual Matrix predict(const Matrix &x) = 0;
+            virtual Matrix predict(const Matrix &x) const = 0;
 
         protected:
             Matrix m_in;
