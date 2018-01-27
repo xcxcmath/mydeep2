@@ -6,11 +6,13 @@
 namespace mydeep {
     namespace layer {
         enum class ParamKey {
+            initialized,
             weight, bias,   //Affine
             init_stddev,
             ratio,          //Dropout
             beta, gamma,    //Batch Norm
             mean, var,
+            momentum_epsilon,
         };
         using Param = std::map<ParamKey, Matrix>;
 

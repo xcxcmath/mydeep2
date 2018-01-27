@@ -8,6 +8,7 @@ namespace mydeep {
             m_param[ParamKey::weight] = m_param[ParamKey::bias]
                                       = Matrix::Zero(out_size, 1);
             m_param[ParamKey::init_stddev] = Matrix::Ones(1, 1);
+            m_param[ParamKey::initialized] = Matrix::Zero(1, 1);
         }
 
         Affine::Affine(Index out_size, double stddev)
@@ -18,6 +19,7 @@ namespace mydeep {
             m_param[ParamKey::weight] = m_param[ParamKey::bias]
                                       = Matrix::Zero(out_size, 1);
             m_param[ParamKey::init_stddev] = Matrix::Constant(1, 1, stddev);
+            m_param[ParamKey::initialized] = Matrix::Zero(1, 1);
         }
 
         Affine::Affine(const Param &param)
@@ -28,7 +30,7 @@ namespace mydeep {
         }
 
         Matrix Affine::predict(const Matrix &x) {
-            if(x.rows() != m_param[ParamKey::weight].cols())
+            if(m_param[ParamKey::initialized](0, 0) == 0)
                 initialize(x.rows());
 
             return (m_param[ParamKey::weight] * x).colwise() +
@@ -65,6 +67,8 @@ namespace mydeep {
             std::random_device rd;
             std::normal_distribution<double> dist(0., v(0, 0));
             w = w.unaryExpr([&rd, &dist](const double&){return dist(rd);});
+
+            m_param[ParamKey::initialized](0, 0) = 1.;
         }
 
     }

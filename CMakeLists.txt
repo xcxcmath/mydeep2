@@ -18,8 +18,8 @@ set(CMAKE_CXX_STANDARD 17)
 #src files
 set(core_sources Function.cpp)
 set(core_headers Common.h Function.h)
-set(layer_sources Layer.cpp Hidden.cpp Affine.cpp Activation.cpp)
-set(layer_headers Layer.h Hidden.h Affine.h Activation.h)
+set(layer_sources Layer.cpp Hidden.cpp Affine.cpp Activation.cpp Dropout.cpp BatchNorm.cpp)
+set(layer_headers Layer.h Hidden.h Affine.h Activation.h Dropout.h BatchNorm.h)
 
 set(sources ${core_sources}
             ${layer_sources})
