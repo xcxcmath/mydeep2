@@ -3,6 +3,26 @@
 namespace mydeep {
     namespace layer {
 
+        const Output::FunctionPair Output::Softmax = {
+                [](const Matrix &x) -> Matrix {
+                    const auto exp = (x.rowwise() - x.colwise().maxCoeff()).array().exp();
+                    return (exp.rowwise() / exp.colwise().sum()).matrix();
+                },
+                [](const Matrix &y, const Matrix &ans) -> double { //Operator error can be ignored
+                    return (ans.array() * y.array().log()).sum()
+                           *-1. / static_cast<double>(y.cols());
+                }
+        };
+        const Output::FunctionPair Output::Identity = {
+                [](const Matrix &x) -> Matrix {
+                    return x;
+                },
+                [](const Matrix &y, const Matrix &ans) -> double {
+                    return (y-ans).array().pow(2.).sum()
+                           /2./static_cast<double>(y.cols());
+                }
+        };
+
         Output::Output(const Output::FunctionPair &fp)
                 :m_fp(fp)
         {
@@ -23,24 +43,6 @@ namespace mydeep {
             return (m_out - ans) / static_cast<double>(m_out.cols());
         }
 
-        const Output::FunctionPair Softmax = {
-                [](const Matrix &x) -> Matrix {
-                    const auto exp = (x.rowwise() - x.colwise().maxCoeff()).array().exp();
-                    return (exp.rowwise() / exp.colwise().sum()).matrix();
-                },
-                [](const Matrix &y, const Matrix &ans) -> double { //Operator error can be ignored
-                    return (ans.array() * y.array().log()).sum()
-                           *-1. / static_cast<double>(y.cols());
-                }
-        };
-        const Output::FunctionPair Identity = {
-                [](const Matrix &x) -> Matrix {
-                    return x;
-                },
-                [](const Matrix &y, const Matrix &ans) -> double {
-                    return (y-ans).array().pow(2.).sum()
-                           /2./static_cast<double>(y.cols());
-                }
-        };
+
     }
 }

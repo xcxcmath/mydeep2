@@ -2,6 +2,33 @@
 
 namespace mydeep {
     namespace layer {
+        const Activation::FunctionPair Activation::ReLU = {
+                [](const double &x) -> double {
+                    return x * (x>0);
+                },
+                [](const double &x) -> double {
+                    return static_cast<double>(x>0);
+                }
+        };
+        const Activation::FunctionPair Activation::Sigmoid = {
+                [](const double &x) -> double {
+                    return 1. / (1.+std::exp(-x));
+                },
+                [](const double &x) -> double {
+                    const double exp = 1./(1.+std::exp(-x));
+                    return exp * (1. - exp);
+                }
+        };
+        const Activation::FunctionPair Activation::Tanh = {
+                [](const double &x) -> double {
+                    return std::tanh(x);
+                },
+                [](const double &x) -> double {
+                    return std::pow(std::cosh(x), -2.);
+                }
+        };
+
+
         Activation::Activation(const Activation::FunctionPair &fp)
                 :m_fp(fp)
         {
@@ -26,31 +53,5 @@ namespace mydeep {
             m_backout.delta = delta.cwiseProduct(m_in.unaryExpr(m_fp.df));
             return m_backout;
         }
-
-        const Activation::FunctionPair ReLU = {
-                [](const double &x) -> double {
-                    return x * (x>0);
-                },
-                [](const double &x) -> double {
-                    return static_cast<double>(x>0);
-                }
-        };
-        const Activation::FunctionPair Sigmoid = {
-                [](const double &x) -> double {
-                    return 1. / (1.+std::exp(-x));
-                },
-                [](const double &x) -> double {
-                    const double exp = 1./(1.+std::exp(-x));
-                    return exp * (1. - exp);
-                }
-        };
-        const Activation::FunctionPair Tanh = {
-                [](const double &x) -> double {
-                    return std::tanh(x);
-                },
-                [](const double &x) -> double {
-                    return std::pow(std::cosh(x), -2.);
-                }
-        };
     }
 }

@@ -15,6 +15,9 @@ namespace mydeep {
                 LossFunction loss;
             };
 
+            static const FunctionPair Softmax;
+            static const FunctionPair Identity;
+
             explicit Output(const FunctionPair &fp);
 
             Matrix predict(const Matrix &x) override;
@@ -25,8 +28,7 @@ namespace mydeep {
             FunctionPair m_fp;
         };
 
-        extern const Output::FunctionPair Softmax;
-        extern const Output::FunctionPair Identity;
+
     }
 }
 

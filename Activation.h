@@ -12,6 +12,9 @@ namespace mydeep {
                 Function f;
                 Function df;
             };
+            static const FunctionPair ReLU;
+            static const FunctionPair Sigmoid;
+            static const FunctionPair Tanh;
 
             explicit Activation(const FunctionPair &fp);
             explicit Activation(const Function &f,
@@ -23,10 +26,6 @@ namespace mydeep {
         protected:
             FunctionPair m_fp;
         };
-
-        extern const Activation::FunctionPair ReLU;
-        extern const Activation::FunctionPair Sigmoid;
-        extern const Activation::FunctionPair Tanh;
     }
 }
 

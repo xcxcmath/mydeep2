@@ -32,7 +32,7 @@ int main() {
     network.insert(AFFINE(3));
     network.insert(SOFTMAX);
 
-    optimizer::NAG sgd(&network);
+    optimizer::Adam sgd(&network, 0.01);
 
     random_device rd;
     uniform_int_distribution<int> dist(0, 2);

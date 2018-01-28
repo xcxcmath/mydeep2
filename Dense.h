@@ -9,15 +9,15 @@
 #include "Adam.h"
 
 #define ACTIVATION new mydeep::layer::Activation
-#define RELU new mydeep::layer::Activation(mydeep::layer::ReLU)
-#define SIGMOID new mydeep::layer::Activation(mydeep::layer::Sigmoid)
-#define TANH new mydeep::layer::Activation(mydeep::layer::Tanh)
+#define RELU new mydeep::layer::Activation(mydeep::layer::Activation::ReLU)
+#define SIGMOID new mydeep::layer::Activation(mydeep::layer::Activation::Sigmoid)
+#define TANH new mydeep::layer::Activation(mydeep::layer::Activation::Tanh)
 #define AFFINE new mydeep::layer::Affine
 #define DROPOUT new mydeep::layer::Dropout
 #define BATCHNORM new mydeep::layer::BatchNorm
 
 #define OUTPUT new mydeep::layer::Output
-#define SOFTMAX new mydeep::layer::Output(mydeep::layer::Softmax)
-#define IDENTITY new mydeep::layer::Output(mydeep::layer::Identity)
+#define SOFTMAX new mydeep::layer::Output(mydeep::layer::Output::Softmax)
+#define IDENTITY new mydeep::layer::Output(mydeep::layer::Output::Identity)
 
 #endif //MYDEEP2_DENSE_H
