@@ -11,7 +11,7 @@ namespace mydeep {
             using ParamVector = network::Network::ParamVector;
 
             enum class HyperParamKey {
-                lr, gamma, beta1, beta2,epsilon
+                lr, gamma, beta1, beta2, epsilon, time, time_max,
             };
             using HyperParam = std::map<HyperParamKey, double>;
 

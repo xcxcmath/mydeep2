@@ -77,22 +77,20 @@ namespace mydeep {
             m_backout.gradient[ParamKey::beta] = delta.rowwise().sum();
             m_backout.gradient[ParamKey::gamma] = delta.cwiseProduct(m_norm).rowwise().sum();
 
-            const auto &g = m_param[ParamKey::gamma];
-            const auto &eps = m_param[ParamKey::momentum_epsilon](0, 1);
             const auto cols = delta.cols();
-            const auto var_eps = m_var.array() + eps;
+            const auto var_eps = m_var.array() + m_param[ParamKey::momentum_epsilon](0, 1);
 
             const auto var_1_5 = var_eps.pow(-1.5).matrix().col(0);
             const auto var_sqr = var_eps.pow(-0.5).matrix().col(0);
 
-            const auto dnorm = g.col(0).asDiagonal() * delta;
+            const auto dnorm = m_param[ParamKey::gamma].col(0).asDiagonal() * delta;
             const Matrix dvar = (var_1_5.asDiagonal() * dnorm.cwiseProduct(m_xc) * -0.5).rowwise().sum();
             Matrix dmean = (var_sqr.asDiagonal() * dnorm * -1.).rowwise().sum();
             dmean = dmean.colwise() +
                     (dvar.col(0).asDiagonal() * (m_xc.rowwise().mean() * -2.)).col(0);
 
             m_backout.delta = (var_sqr.asDiagonal() * dnorm).colwise() + dmean.col(0) / cols;
-            m_backout.delta = m_backout.delta.colwise() + (dvar.cwiseProduct(m_xc) * 2. /cols).col(0);
+            m_backout.delta = m_backout.delta + (dvar.col(0).asDiagonal() * m_xc * 2. /cols);
 
             return m_backout;
         }
