@@ -23,8 +23,8 @@ set(layer_headers Layer.h Hidden.h Affine.h Activation.h Dropout.h BatchNorm.h O
 set(network_sources Network.cpp)
 set(network_headers Network.h)
 
-set(optimizer_sources Optimizer.cpp Momentum.cpp Adam.cpp)
-set(optimizer_headers Optimizer.h Momentum.h Adam.h)
+set(optimizer_sources Optimizer.cpp Momentum.cpp Adam.cpp NAG.cpp)
+set(optimizer_headers Optimizer.h Momentum.h Adam.h NAG.h)
 
 set(sources ${core_sources}
             ${layer_sources}
@@ -35,4 +35,8 @@ set(headers ${core_headers}
         ${network_headers}
         ${optimizer_headers} Dense.h)
 
-add_executable(mydeep2 main.cpp ${sources} ${headers})
+set(src ${sources} ${headers})
+
+add_library(mydeep2lib ${src})
+add_executable(mydeep2 main.cpp ${src})
+target_link_libraries(mydeep2 mydeep2lib)

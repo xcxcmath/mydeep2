@@ -4,33 +4,32 @@ namespace mydeep {
     namespace optimizer {
 
         Momentum::Momentum(network::Network *net, double learning_rate, double momentum)
-                : Optimizer(net, learning_rate),
-                  m_initialized(false)
+                : Optimizer(net, learning_rate)
         {
             m_hp[HyperParamKey::gamma] = momentum;
+            m_hp[HyperParamKey::time] = 0.;
         }
 
-        Momentum::Momentum(network::Network *net, const Optimizer::HyperParam &hp, const Optimizer::Avg &avg)
-                : Optimizer(net, hp, avg),
-                  m_initialized(true)
+        Momentum::Momentum(network::Network *net, const HyperParam &hp, const Avg &avg)
+                : Optimizer(net, hp, avg)
         {
 
         }
 
-        Optimizer::ParamVector Momentum::get_update(const Optimizer::ParamVector &grad) {
+        ParamVector Momentum::get_update(const ParamVector &grad) {
             auto ret = get_gradient_step(grad);
 
             auto &momentum = m_avg[AvgKey::first];
 
             const auto sz = grad.size();
 
-            if(!m_initialized){
+            if(m_hp[HyperParamKey::time] == 0.){
                 momentum = ret;
                 for(size_t i = 0; i < sz; ++i)
                     for(const auto &pair: ret[i])
                         momentum[i][pair.first] *= -1.;
 
-                m_initialized = true;
+                m_hp[HyperParamKey::time] = 1.;
                 return ret;
             }
 
@@ -46,7 +45,7 @@ namespace mydeep {
             return ret;
         }
 
-        Optimizer::ParamVector Momentum::get_momentum_step(const Optimizer::ParamVector &grad) {
+        ParamVector Momentum::get_momentum_step(const ParamVector &grad) {
             auto ret = m_avg[AvgKey::first];
 
             const auto sz = grad.size();

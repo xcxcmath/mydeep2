@@ -19,13 +19,13 @@ namespace mydeep {
         }
 
         Adam::Adam(network::Network *net,
-                   const Optimizer::HyperParam &hp,
-                   const Optimizer::Avg &avg)
+                   const HyperParam &hp,
+                   const Avg &avg)
                 : Optimizer(net, hp, avg) {
 
         }
 
-        Optimizer::ParamVector Adam::get_update(const Optimizer::ParamVector &grad) {
+        ParamVector Adam::get_update(const ParamVector &grad) {
             const auto &lr = m_hp[HyperParamKey::lr];
             const auto &b1 = m_hp[HyperParamKey::beta1];
             const auto &b2 = m_hp[HyperParamKey::beta2];

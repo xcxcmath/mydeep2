@@ -23,16 +23,16 @@ int main() {
 
     network::Network network;
 
-    network.insert(new layer::Affine(15));
-    network.insert(new layer::BatchNorm());
-    network.insert(new layer::Activation(layer::ReLU));
-    network.insert(new layer::Affine(15));
-    network.insert(new layer::BatchNorm());
-    network.insert(new layer::Activation(layer::ReLU));
-    network.insert(new layer::Affine(3));
-    network.insert(new layer::Output(layer::Softmax));
+    network.insert(AFFINE(15));
+    network.insert(BATCHNORM());
+    network.insert(RELU);
+    network.insert(AFFINE(15));
+    network.insert(BATCHNORM());
+    network.insert(RELU);
+    network.insert(AFFINE(3));
+    network.insert(SOFTMAX);
 
-    optimizer::Adam sgd(&network, 0.01);
+    optimizer::NAG sgd(&network);
 
     random_device rd;
     uniform_int_distribution<int> dist(0, 2);

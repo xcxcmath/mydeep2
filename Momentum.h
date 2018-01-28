@@ -18,8 +18,6 @@ namespace mydeep {
             ParamVector get_update(const ParamVector &grad) override;
 
             ParamVector get_momentum_step(const ParamVector &grad);
-
-            bool m_initialized;
         };
     }
 }

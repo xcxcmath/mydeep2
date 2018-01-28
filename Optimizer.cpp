@@ -10,8 +10,8 @@ namespace mydeep {
         }
 
         Optimizer::Optimizer(network::Network *net,
-                             const Optimizer::HyperParam &hp,
-                             const Optimizer::Avg &avg)
+                             const HyperParam &hp,
+                             const Avg &avg)
                 :m_net(net),
                  m_hp(hp),
                  m_avg(avg)
@@ -20,13 +20,14 @@ namespace mydeep {
         }
 
         double Optimizer::learn(const Matrix &x, const Matrix &ans) {
+            m_in = x; m_ans = ans;
             auto lg = m_net->flow(x, ans);
             auto dv = get_update(lg.gradient);
             m_net->update(dv);
             return lg.loss;
         }
 
-        Optimizer::HyperParam Optimizer::hyper_param() const {
+        HyperParam Optimizer::hyper_param() const {
             return m_hp;
         }
 
@@ -34,11 +35,11 @@ namespace mydeep {
             return m_avg;
         }
 
-        Optimizer::ParamVector Optimizer::get_update(const Optimizer::ParamVector &grad) {
+        ParamVector Optimizer::get_update(const ParamVector &grad) {
             return get_gradient_step(grad);
         }
 
-        Optimizer::ParamVector Optimizer::get_gradient_step(const Optimizer::ParamVector &grad) {
+        ParamVector Optimizer::get_gradient_step(const ParamVector &grad) {
             ParamVector ret;
 
             for(const auto &param: grad){
