@@ -80,6 +80,6 @@ int main() {
         cout << " answer : " << rsp[r] << " ";
         cout << (str2rsp(rsp[r]) == rsp_result[input] ? "CORRECT!" : "WRONG ANSWER") << endl << endl;
     }
-*/
+//*/
     return 0;
 }

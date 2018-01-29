@@ -20,6 +20,9 @@ namespace mydeep {
             Matrix m_xc;
             Matrix m_var;
             Matrix m_norm;
+
+            static const std::function<double(const double &)> pow_minus_half;
+            static const std::function<double(const double &)> pow_minus_1_5;
         };
     }
 }
