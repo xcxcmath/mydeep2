@@ -21,11 +21,11 @@ namespace mydeep {
 
         ParamVector NAG::get_update(const ParamVector &grad) {
             const auto sz = grad.size();
+            auto &momentum = m_avg[AvgKey::first];
 
             if(m_hp[HyperParamKey::time] == 0.){
                 auto ret = get_gradient_step(grad);
-                m_avg[AvgKey::first] = ret;
-                auto &momentum = m_avg[AvgKey::first];
+                momentum = ret;
                 for(size_t i = 0; i < sz; ++i)
                     for(const auto &pair: momentum[i])
                         momentum[i][pair.first] *= -1.;
@@ -34,7 +34,6 @@ namespace mydeep {
                 return ret;
             }
 
-            auto &momentum = m_avg[AvgKey::first];
             auto momentum_step = get_momentum_step(grad);
             for(size_t i = 0; i < sz; ++i)
                 for(const auto &pair: grad[i])
