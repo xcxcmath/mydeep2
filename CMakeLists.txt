@@ -38,5 +38,6 @@ set(headers ${core_headers}
 set(src ${sources} ${headers})
 
 add_library(mydeep2lib ${src})
-add_executable(mydeep2 main.cpp ${src})
+add_executable(mydeep2 main.cpp)
 target_link_libraries(mydeep2 mydeep2lib)
+set_target_properties(mydeep2lib PROPERTIES OUTPUT_NAME mydeep2)
