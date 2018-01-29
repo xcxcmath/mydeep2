@@ -5,11 +5,12 @@ namespace mydeep {
 
         const Output::FunctionPair Output::Softmax = {
                 [](const Matrix &x) -> Matrix {
-                    const auto exp = (x.rowwise() - x.colwise().maxCoeff()).array().exp();
-                    return (exp.rowwise() / exp.colwise().sum()).matrix();
+                    const auto exp = (x.rowwise() - x.colwise().maxCoeff()).unaryExpr(cwise_exp());
+                    const auto exp_sum = exp.colwise().sum().unaryExpr(cwise_pow(-1.)).row(0).asDiagonal();
+                    return exp * exp_sum;
                 },
-                [](const Matrix &y, const Matrix &ans) -> double { //Operator error can be ignored
-                    return (ans.array() * y.array().log()).sum()
+                [](const Matrix &y, const Matrix &ans) -> double {
+                    return (ans.cwiseProduct(y.unaryExpr(cwise_log()))).sum()
                            *-1. / static_cast<double>(y.cols());
                 }
         };
@@ -18,7 +19,9 @@ namespace mydeep {
                     return x;
                 },
                 [](const Matrix &y, const Matrix &ans) -> double {
-                    return (y-ans).array().pow(2.).sum()
+                    return (y-ans).unaryExpr(
+                            [](const double &i) -> double {return i*i;}
+                    ).sum()
                            /2./static_cast<double>(y.cols());
                 }
         };

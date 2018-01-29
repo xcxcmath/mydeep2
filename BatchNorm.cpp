@@ -31,7 +31,7 @@ namespace mydeep {
 
             Matrix norm = x.colwise() - cache_mean.col(0);
             const auto var_sqr = (cache_var + Matrix::Constant(x.rows(), 1, eps))
-                    .unaryExpr(pow_minus_half).col(0);
+                    .unaryExpr(cwise_pow(-0.5)).col(0);
 
             norm = var_sqr.asDiagonal() * norm;
             norm = (g.asDiagonal() * norm).colwise() + b;
@@ -66,7 +66,7 @@ namespace mydeep {
             m_xc = x.colwise() - m_mean.col(0);
             m_var = m_xc.rowwise().squaredNorm()/x.cols();
             const auto var_sqr = (m_var + Matrix::Constant(x.rows(), 1, eps))
-                                .unaryExpr(pow_minus_half).col(0);
+                                .unaryExpr(cwise_pow(-0.5)).col(0);
 
             cache_mean = cache_mean * momentum + m_mean * (1-momentum);
             cache_var = cache_var * momentum + m_var * (1-momentum);
@@ -85,8 +85,8 @@ namespace mydeep {
             const auto rows = delta.rows(), cols = delta.cols();
             const auto var_eps = m_var + Matrix::Constant(rows, 1, eps);
 
-            const auto var_1_5 = var_eps.unaryExpr(pow_minus_1_5).col(0);
-            const auto var_sqr = var_eps.unaryExpr(pow_minus_half).col(0);
+            const auto var_1_5 = var_eps.unaryExpr(cwise_pow(-1.5)).col(0);
+            const auto var_sqr = var_eps.unaryExpr(cwise_pow(-0.5)).col(0);
 
             const auto dnorm = m_param[ParamKey::gamma].col(0).asDiagonal() * delta;
             const Matrix dvar = (var_1_5.asDiagonal() * dnorm.cwiseProduct(m_xc) * -0.5).rowwise().sum();
@@ -99,12 +99,5 @@ namespace mydeep {
 
             return m_backout;
         }
-
-        const std::function<double(const double &)> BatchNorm::pow_minus_half = [](const double &i) -> double {
-            return std::pow(i, -0.5);
-        };
-        const std::function<double(const double &)> BatchNorm::pow_minus_1_5 = [](const double &i) -> double {
-            return std::pow(i, -1.5);
-        };
     }
 }

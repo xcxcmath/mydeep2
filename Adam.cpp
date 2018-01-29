@@ -56,7 +56,8 @@ namespace mydeep {
                 for(const auto &pair: grad[i]){
                     const auto &key = pair.first;
                     const auto &val = pair.second;
-                    const auto val_sqr = val.array().pow(2).matrix();
+                    //const auto val_sqr = val.array().pow(2).matrix();
+                    const auto val_sqr = val.unaryExpr(cwise_pow(2));
 
                     if(t == 1.){
                         am[i][key] = av[i][key] = Matrix::Zero(val.rows(), val.cols());
@@ -66,7 +67,9 @@ namespace mydeep {
                     auto &v_here = av[i][key];
                     m_here = m_here * b1 + val * (1. - b1);
                     v_here = v_here * b2 + val_sqr * (1. - b2);
-                    here[key] = (m_here.array() / (v_here.array() + eps).pow(0.5) * lr_t).matrix();
+                    //here[key] = (m_here.array() / (v_here.array() + eps).pow(0.5) * lr_t).matrix();
+                    auto v_eps = v_here + Matrix::Constant(val.rows(), val.cols(), eps);
+                    here[key] = m_here.cwiseProduct(v_eps.unaryExpr(cwise_pow(-0.5))) * lr_t;
                 }
 
                 ret.push_back(here);

@@ -17,7 +17,7 @@ set(CMAKE_CXX_STANDARD 17)
 
 #src files
 set(core_sources)
-set(core_headers Common.h)
+set(core_headers Common.h Common.cpp)
 set(layer_sources Layer.cpp Hidden.cpp Affine.cpp Activation.cpp Dropout.cpp BatchNorm.cpp Output.cpp)
 set(layer_headers Layer.h Hidden.h Affine.h Activation.h Dropout.h BatchNorm.h Output.h)
 set(network_sources Network.cpp)
